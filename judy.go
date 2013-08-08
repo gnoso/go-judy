@@ -3,24 +3,6 @@ package judy
 /*
 #cgo LDFLAGS: -lJudy
 #include <Judy.h>
-
-static void JudyLInsert(PPvoid_t PJLArray, Word_t index, Word_t value) {
-  PPvoid_t val = JudyLIns(PJLArray, index, PJE0);
-  *(Word_t *)val = value;
-}
-
-static Word_t JudyLFree(PPvoid_t PJLArray) {
-  return JudyLFreeArray(PJLArray, PJE0);
-}
-
-static Word_t JudyLCt(Pvoid_t PJLArray, Word_t indexA, Word_t indexB) {
-  return JudyLCount(PJLArray, indexA, indexB, PJE0);
-}
-
-static Word_t JudyLMemUsage(Pvoid_t PJLArray) {
-  return JudyLMemUsed(PJLArray);
-}
-
 */
 import "C"
 
@@ -29,26 +11,37 @@ import (
 	"unsafe"
 )
 
-type JudyL struct {
-	PJLArray unsafe.Pointer
+// This project is a cgo wrapper for Judy arrays implemented in libJudy.
+// More information on the project can be found here: http://judy.sourceforge.net/
+
+type Judy1 struct {
+	array unsafe.Pointer
 }
 
-func (jl *JudyL) Insert(index, value uint64) {
-	C.JudyLInsert(&jl.PJLArray, C.Word_t(index), C.Word_t(value))
+func (j *Judy1) Set(index uint64) {
+	C.Judy1Set(C.PPvoid_t(&j.array), C.Word_t(index), nil)
 }
 
-func (jl *JudyL) Free() uint64 {
-	return uint64(C.JudyLFree(&jl.PJLArray))
+func (j *Judy1) Unset(index uint64) {
+	C.Judy1Unset(C.PPvoid_t(&j.array), C.Word_t(index), nil)
 }
 
-func (jl *JudyL) CountAll() uint64 {
-	return uint64(C.JudyLCt(C.Pvoid_t(jl.PJLArray), 0, math.MaxUint64))
+func (j *Judy1) Test(index uint64) bool {
+	return C.Judy1Test(C.Pcvoid_t(j.array), C.Word_t(index), nil) != 0
 }
 
-func (jl *JudyL) CountFrom(indexA, indexB uint64) uint64 {
-	return uint64(C.JudyLCt(C.Pvoid_t(jl.PJLArray), C.Word_t(indexA), C.Word_t(indexB)))
+func (j *Judy1) Free() uint64 {
+	return uint64(C.Judy1FreeArray(C.PPvoid_t(&j.array), nil))
 }
 
-func (jl *JudyL) MemoryUsage() uint64 {
-	return uint64(C.JudyLMemUsage(C.Pvoid_t(jl.PJLArray)))
+func (j *Judy1) CountAll() uint64 {
+	return uint64(C.Judy1Count(C.Pcvoid_t(j.array), 0, math.MaxUint64, nil))
+}
+
+func (j *Judy1) CountFrom(indexA, indexB uint64) uint64 {
+	return uint64(C.Judy1Count(C.Pcvoid_t(j.array), C.Word_t(indexA), C.Word_t(indexB), nil))
+}
+
+func (j *Judy1) MemoryUsed() uint64 {
+	return uint64(C.Judy1MemUsed(C.Pcvoid_t(j.array)))
 }
