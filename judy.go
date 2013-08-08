@@ -80,3 +80,35 @@ func (j *Judy1) CountFrom(indexA, indexB uint64) uint64 {
 func (j *Judy1) MemoryUsed() uint64 {
 	return uint64(C.Judy1MemUsed(C.Pcvoid_t(j.array)))
 }
+
+// Search (inclusive) for the first index present that is equal to or greater than the passed index.
+// (Start with index = 0 to find the first index in the array.) This is typically used to begin a sorted-order scan of the indexes present in a Judy1 array.
+//
+// index - search index
+// returns uint64 - value of the first index that is equal to or greated than the passed index (only if bool return value is true)
+// returns bool - true if the search was successful, false if an index was not found
+func (j *Judy1) First(index uint64) (uint64, bool) {
+	var idx C.Word_t = C.Word_t(index)
+
+	if C.Judy1First(C.Pcvoid_t(j.array), &idx, nil) != 0 {
+		return uint64(idx), true
+	} else {
+		return 0, false
+	}
+}
+
+// Search (exclusive) for the first index present that is greater than the passed index.
+// This is typically used to continue a sorted-order scan of the indexes present in a Judy1 array.
+//
+// index - search index
+// returns uint64 - value of the first index that is greater than the passed index (only if bool return value is true)
+// returns bool - true if the search was successful, false if an index was not found
+func (j *Judy1) Next(index uint64) (uint64, bool) {
+	var idx C.Word_t = C.Word_t(index)
+
+	if C.Judy1Next(C.Pcvoid_t(j.array), &idx, nil) != 0 {
+		return uint64(idx), true
+	} else {
+		return 0, false
+	}
+}

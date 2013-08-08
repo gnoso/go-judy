@@ -130,6 +130,50 @@ func TestUnset(t *testing.T) {
 	}
 }
 
+func TestFirst(t *testing.T) {
+
+	j := Judy1{}
+	defer j.Free()
+
+	var i uint64
+	for i = 0; i < 100; i++ {
+		j.Set(i * 2)
+	}
+
+	if next, ok := j.First(20); ok && next != 20 {
+		t.Errorf("First(20) should be 20, was %v", next)
+	}
+	if next, ok := j.First(21); ok && next != 22 {
+		t.Errorf("First(21) should be 22, was %v", next)
+	}
+	if _, ok := j.First(201); ok {
+		t.Errorf("First(201) should not be found")
+	}
+
+}
+
+func TestNext(t *testing.T) {
+
+	j := Judy1{}
+	defer j.Free()
+
+	var i uint64
+	for i = 0; i < 100; i++ {
+		j.Set(i * 2)
+	}
+
+	if next, ok := j.Next(20); ok && next != 22 {
+		t.Errorf("Next(20) should be 22, was %v", next)
+	}
+	if next, ok := j.Next(21); ok && next != 22 {
+		t.Errorf("Next(21) should be 22, was %v", next)
+	}
+	if _, ok := j.Next(200); ok {
+		t.Errorf("Next(200) should not be found")
+	}
+
+}
+
 func runOrderedMemUsageTest(t *testing.T, n int) {
 	j := Judy1{}
 	defer j.Free()
