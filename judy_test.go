@@ -152,6 +152,27 @@ func TestFirst(t *testing.T) {
 
 }
 
+func TestLast(t *testing.T) {
+
+	j := Judy1{}
+	defer j.Free()
+
+	var i uint64
+	for i = 1; i < 100; i++ {
+		j.Set(i * 2)
+	}
+
+	if next, ok := j.Last(20); ok && next != 20 {
+		t.Errorf("Last(20) should be 20, was %v", next)
+	}
+	if next, ok := j.Last(21); ok && next != 20 {
+		t.Errorf("Last(21) should be 20, was %v", next)
+	}
+	if _, ok := j.Last(1); ok {
+		t.Errorf("Last(1) should not be found")
+	}
+}
+
 func TestNext(t *testing.T) {
 
 	j := Judy1{}
@@ -170,6 +191,28 @@ func TestNext(t *testing.T) {
 	}
 	if _, ok := j.Next(200); ok {
 		t.Errorf("Next(200) should not be found")
+	}
+
+}
+
+func TestPrev(t *testing.T) {
+
+	j := Judy1{}
+	defer j.Free()
+
+	var i uint64
+	for i = 1; i < 100; i++ {
+		j.Set(i * 2)
+	}
+
+	if next, ok := j.Prev(20); ok && next != 18 {
+		t.Errorf("Prev(20) should be 18, was %v", next)
+	}
+	if next, ok := j.Prev(21); ok && next != 20 {
+		t.Errorf("Prev(21) should be 20, was %v", next)
+	}
+	if _, ok := j.Prev(2); ok {
+		t.Errorf("Prev(2) should not be found")
 	}
 
 }
