@@ -74,6 +74,37 @@ func TestSet(t *testing.T) {
 
 }
 
+func TestSetReturn(t *testing.T) {
+	j := Judy1{}
+	defer j.Free()
+
+	if !j.Set(12345) {
+		t.Error("First set should return true")
+	}
+	if j.Set(12345) {
+		t.Error("Second set should return false")
+	}
+	if !j.Test(12345) {
+		t.Error("Data should be set")
+	}
+}
+
+func TestUnsetReturn(t *testing.T) {
+	j := Judy1{}
+	defer j.Free()
+
+	if j.Unset(12345) {
+		t.Error("First unset should return false")
+	}
+	j.Set(12345)
+	if !j.Unset(12345) {
+		t.Error("Second unset should return true")
+	}
+	if j.Test(12345) {
+		t.Error("Data should be unset")
+	}
+}
+
 func TestUnset(t *testing.T) {
 
 	j := Judy1{}

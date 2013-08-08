@@ -7,6 +7,8 @@ Go docs can be found here: [http://godoc.org/github.com/gnoso/go-judy](http://go
 
 Judy arrays are a fast and memory efficient dynamic array structure. There are several different variants of Judy arrays, but this package only implements the Judy1 bitvector variety at this time. Adding the other variants would be relatively simple, however.
 
+**NOTE:** The Judy array allocates memory directly from the operating system and is NOT garbage collected by the Go runtime. **It is very important that you call Free() on a Judy array after using it to prevent memory leaks.**
+
 Here are some examples of set/unset/test bit operations.
 
     j := Judy1{}   // declare empty Judy1 bit vector array
