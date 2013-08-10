@@ -1,10 +1,13 @@
-// Wrapper for Judy arrays found in libjudy. http://judy.sourceforge.net/
+// Go language wrapper for Judy arrays (as found at http://judy.sourceforge.net)
 //
-// Judy arrays are a fast and memory efficient dynamic array structure. There are several different variants
-// of Judy arrays, but this package only implements the Judy1 bitvector variety at this time. Adding the other
+// Judy arrays are a fast and memory efficient dynamic array structure. Judy arrays were invented by Doug Baskins
+// and implemented by Hewlett-Packard.
+//
+// Judy is designed to avoid cache-line fills wherever possible. There are several different variants of Judy
+// arrays. This package implements the Judy1 bitvector and the JudyL integer map currently. Adding other
 // variants should be relatively simple, however.
 //
-// Counting and range counting operations are particularly fast, and don't require a scan of the array.
+// Counting and range counting operations are particularly fast, and do not require a scan of the array.
 package judy
 
 /*
@@ -31,8 +34,9 @@ import (
 // Memory to support the array is allocated as bits are set, and released as bits are unset. If the Judy1 array is freed ( by calling .Free() ), all bits are unset (and the Judy1 array requires no memory).
 // As with an ordinary array, a Judy1 array contains no duplicate indexes.
 //
-// NOTE: The Judy array allocates memory directly from the operating system and is NOT garbage collected by the
-// Go runtime. It is very important that you call Free() on a Judy array after using it to prevent memory leaks.
+// NOTE: The Judy array is implemented in C and allocates memory directly from the operating system. It is NOT
+// garbage collected by the Go runtime. It is very important that you call Free() on a Judy array after using
+// it to prevent memory leaks. The "defer" pattern is a great way to accomplish this.
 type Judy1 struct {
 	array unsafe.Pointer
 }
@@ -65,13 +69,13 @@ func (j *Judy1) Free() uint64 {
 }
 
 // Count the number of indexes present in the Judy1 array.
-// Returns the count. A return value of 0 can be valid as a count, or it can indicate a special case for fully populated array (32-bit machines only). See libjudy docs for ways to resolve this.
+// A return value of 0 can be valid as a count, or it can indicate a special case for fully populated array (32-bit machines only). See libjudy docs for ways to resolve this.
 func (j *Judy1) CountAll() uint64 {
 	return uint64(C.Judy1Count(C.Pcvoid_t(j.array), 0, math.MaxUint64, nil))
 }
 
 // Count the number of indexes present in the Judy1 array between indexA and indexB (inclusive).
-// Returns the count. A return value of 0 can be valid as a count, or it can indicate a special case for fully populated array (32-bit machines only). See libjudy docs for ways to resolve this.
+// A return value of 0 can be valid as a count, or it can indicate a special case for fully populated array (32-bit machines only). See libjudy docs for ways to resolve this.
 func (j *Judy1) CountFrom(indexA, indexB uint64) uint64 {
 	return uint64(C.Judy1Count(C.Pcvoid_t(j.array), C.Word_t(indexA), C.Word_t(indexB), nil))
 }

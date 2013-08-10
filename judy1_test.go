@@ -6,7 +6,7 @@ import (
 	"testing"
 )
 
-func TestEmptyJudyArray(t *testing.T) {
+func TestEmptyJudy1Array(t *testing.T) {
 
 	j := Judy1{}
 	r := j.Free()
@@ -16,7 +16,7 @@ func TestEmptyJudyArray(t *testing.T) {
 	}
 }
 
-func TestCount(t *testing.T) {
+func TestJudy1Count(t *testing.T) {
 
 	j := Judy1{}
 	defer j.Free()
@@ -50,7 +50,7 @@ func TestCount(t *testing.T) {
 
 }
 
-func TestSet(t *testing.T) {
+func TestJudy1Set(t *testing.T) {
 
 	j := Judy1{}
 	defer j.Free()
@@ -74,7 +74,7 @@ func TestSet(t *testing.T) {
 
 }
 
-func TestSetReturn(t *testing.T) {
+func TestJudy1SetReturn(t *testing.T) {
 	j := Judy1{}
 	defer j.Free()
 
@@ -89,7 +89,7 @@ func TestSetReturn(t *testing.T) {
 	}
 }
 
-func TestUnsetReturn(t *testing.T) {
+func TestJudy1UnsetReturn(t *testing.T) {
 	j := Judy1{}
 	defer j.Free()
 
@@ -105,7 +105,7 @@ func TestUnsetReturn(t *testing.T) {
 	}
 }
 
-func TestUnset(t *testing.T) {
+func TestJudy1Unset(t *testing.T) {
 
 	j := Judy1{}
 	defer j.Free()
@@ -130,7 +130,7 @@ func TestUnset(t *testing.T) {
 	}
 }
 
-func TestFirst(t *testing.T) {
+func TestJudy1First(t *testing.T) {
 
 	j := Judy1{}
 	defer j.Free()
@@ -152,7 +152,7 @@ func TestFirst(t *testing.T) {
 
 }
 
-func TestLast(t *testing.T) {
+func TestJudy1Last(t *testing.T) {
 
 	j := Judy1{}
 	defer j.Free()
@@ -173,7 +173,7 @@ func TestLast(t *testing.T) {
 	}
 }
 
-func TestNext(t *testing.T) {
+func TestJudy1Next(t *testing.T) {
 
 	j := Judy1{}
 	defer j.Free()
@@ -195,7 +195,7 @@ func TestNext(t *testing.T) {
 
 }
 
-func TestPrev(t *testing.T) {
+func TestJudy1Prev(t *testing.T) {
 
 	j := Judy1{}
 	defer j.Free()
@@ -217,7 +217,7 @@ func TestPrev(t *testing.T) {
 
 }
 
-func runOrderedMemUsageTest(t *testing.T, n int) {
+func runOrderedJudy1MemUsageTest(t *testing.T, n int) {
 	j := Judy1{}
 	defer j.Free()
 
@@ -231,7 +231,7 @@ func runOrderedMemUsageTest(t *testing.T, n int) {
 	t.Logf("Memory Usage with %7v ordered bits %8v", n, j.MemoryUsed())
 }
 
-func runRandomMemUsageTest(t *testing.T, n int) {
+func runRandomJudy1MemUsageTest(t *testing.T, n int) {
 	j := Judy1{}
 	defer j.Free()
 
@@ -245,21 +245,21 @@ func runRandomMemUsageTest(t *testing.T, n int) {
 	t.Logf("Memory Usage with %7v random bits  %8v", n, j.MemoryUsed())
 }
 
-func TestMemUsage(t *testing.T) {
+func TestJudy1MemUsage(t *testing.T) {
 
-	runOrderedMemUsageTest(t, 1000)
-	runRandomMemUsageTest(t, 1000)
-	runOrderedMemUsageTest(t, 10000)
-	runRandomMemUsageTest(t, 10000)
-	runOrderedMemUsageTest(t, 100000)
-	runRandomMemUsageTest(t, 100000)
-	runOrderedMemUsageTest(t, 1000000)
-	runRandomMemUsageTest(t, 1000000)
+	runOrderedJudy1MemUsageTest(t, 1000)
+	runRandomJudy1MemUsageTest(t, 1000)
+	runOrderedJudy1MemUsageTest(t, 10000)
+	runRandomJudy1MemUsageTest(t, 10000)
+	runOrderedJudy1MemUsageTest(t, 100000)
+	runRandomJudy1MemUsageTest(t, 100000)
+	runOrderedJudy1MemUsageTest(t, 1000000)
+	runRandomJudy1MemUsageTest(t, 1000000)
 
 	//t.Fail() // Uncomment to see the log output
 }
 
-func BenchmarkCountAllRand1000(b *testing.B) {
+func BenchmarkJudy1CountAllRand1000(b *testing.B) {
 	j := Judy1{}
 	defer j.Free()
 
@@ -275,7 +275,7 @@ func BenchmarkCountAllRand1000(b *testing.B) {
 	}
 }
 
-func BenchmarkCountAllRand1000000(b *testing.B) {
+func BenchmarkJudy1CountAllRand1000000(b *testing.B) {
 	j := Judy1{}
 	defer j.Free()
 
@@ -291,7 +291,7 @@ func BenchmarkCountAllRand1000000(b *testing.B) {
 	}
 }
 
-func BenchmarkCountAllOrd1000(b *testing.B) {
+func BenchmarkJudy1CountAllOrd1000(b *testing.B) {
 	j := Judy1{}
 	defer j.Free()
 
@@ -307,7 +307,7 @@ func BenchmarkCountAllOrd1000(b *testing.B) {
 	}
 }
 
-func BenchmarkCountAllOrd1000000(b *testing.B) {
+func BenchmarkJudy1CountAllOrd1000000(b *testing.B) {
 	j := Judy1{}
 	defer j.Free()
 
@@ -323,7 +323,7 @@ func BenchmarkCountAllOrd1000000(b *testing.B) {
 	}
 }
 
-func BenchmarkCountRangeRand1000(b *testing.B) {
+func BenchmarkJudy1CountRangeRand1000(b *testing.B) {
 	j := Judy1{}
 	defer j.Free()
 
@@ -339,7 +339,7 @@ func BenchmarkCountRangeRand1000(b *testing.B) {
 	}
 }
 
-func BenchmarkCountRangeRand1000000(b *testing.B) {
+func BenchmarkJudy1CountRangeRand1000000(b *testing.B) {
 	j := Judy1{}
 	defer j.Free()
 
