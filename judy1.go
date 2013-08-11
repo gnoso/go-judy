@@ -148,3 +148,18 @@ func (j *Judy1) Prev(index uint64) (uint64, bool) {
 		return 0, false
 	}
 }
+
+// Locate the Nth index that is present in the Judy1 array (Nth = 1 returns the first index present).
+//
+//   nth - nth index to find
+//   returns uint64 - nth index (unless return false))
+//           bool   - true if the search was successful, false if an index was not found
+func (j *Judy1) ByCount(nth uint64) (uint64, bool) {
+	var idx C.Word_t
+
+	if C.Judy1ByCount(C.Pcvoid_t(j.array), C.Word_t(nth), &idx, nil) != 0 {
+		return uint64(idx), true
+	} else {
+		return 0, false
+	}
+}

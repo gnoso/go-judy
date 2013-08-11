@@ -74,6 +74,32 @@ func TestJudyLInsertGet(t *testing.T) {
 
 }
 
+func TestJudyLByCount(t *testing.T) {
+
+	j := JudyL{}
+	defer j.Free()
+
+	j.Insert(12345, 234)
+	j.Insert(11235, 11235)
+	j.Insert(54321, 4321)
+
+	if idx, val, ok := j.ByCount(1); ok && (idx != 11235 || val != 11235) {
+		t.Errorf("ByCount should return 11235,11235,true but was %v, %v, %v", idx, val, ok)
+	}
+	if idx, val, ok := j.ByCount(2); ok && (idx != 12345 || val != 234) {
+		t.Errorf("ByCount should return 12345,234,true but was %v, %v, %v", idx, val, ok)
+	}
+	if idx, val, ok := j.ByCount(3); ok && (idx != 54321 || val != 4321) {
+		t.Errorf("ByCount should return 54321,4321,true but was %v, %v, %v", idx, val, ok)
+	}
+	if _, _, ok := j.ByCount(0); ok {
+		t.Error("There should be no return value for 0")
+	}
+	if _, _, ok := j.ByCount(4); ok {
+		t.Error("There should be no return value for 4")
+	}
+}
+
 func TestJudyLDelete(t *testing.T) {
 
 	j := JudyL{}

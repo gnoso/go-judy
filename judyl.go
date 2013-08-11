@@ -162,3 +162,20 @@ func (j *JudyL) Prev(index uint64) (uint64, uint64, bool) {
 		return uint64(idx), uint64(*((*C.Word_t)(pval))), true
 	}
 }
+
+// Locate the Nth index that is present in the JudyL array (Nth = 1 returns the first index present).
+//
+//   nth - nth index to find
+//   returns uint64 - nth index (unless return false)
+//           uint64 - nth value (unless return false)
+//           bool   - true if the search was successful, false if an index was not found
+func (j *JudyL) ByCount(nth uint64) (uint64, uint64, bool) {
+	var idx C.Word_t
+	pval := unsafe.Pointer(C.JudyLByCount(C.Pcvoid_t(j.array), C.Word_t(nth), &idx, nil))
+
+	if pval == nil {
+		return 0, 0, false
+	} else {
+		return uint64(idx), uint64(*((*C.Word_t)(pval))), true
+	}
+}

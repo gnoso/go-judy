@@ -130,6 +130,32 @@ func TestJudy1Unset(t *testing.T) {
 	}
 }
 
+func TestJudy1ByCount(t *testing.T) {
+
+	j := Judy1{}
+	defer j.Free()
+
+	j.Set(12345)
+	j.Set(11235)
+	j.Set(54321)
+
+	if idx, ok := j.ByCount(1); ok && idx != 11235 {
+		t.Errorf("ByCount should return 11235,true but was %v, %v", idx, ok)
+	}
+	if idx, ok := j.ByCount(2); ok && idx != 12345 {
+		t.Errorf("ByCount should return 12345,true but was %v, %v", idx, ok)
+	}
+	if idx, ok := j.ByCount(3); ok && idx != 54321 {
+		t.Errorf("ByCount should return 54321,true but was %v, %v", idx, ok)
+	}
+	if _, ok := j.ByCount(0); ok {
+		t.Error("There should be no return value for 0")
+	}
+	if _, ok := j.ByCount(4); ok {
+		t.Error("There should be no return value for 4")
+	}
+}
+
 func TestJudy1First(t *testing.T) {
 
 	j := Judy1{}
